@@ -1,0 +1,6 @@
+﻿@{
+    ViewBag.Title = "GETTASK";
+}
+
+<h2>GETTASK</h2>
+       <td> @Html.DropDownList("TaskId", (IEnumerable<SelectListItem>)ViewBag.List, "---------Select---------", new { id = "txtid", style = "width:190px;" }) </td>

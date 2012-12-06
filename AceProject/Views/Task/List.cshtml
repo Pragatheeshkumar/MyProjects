@@ -1,0 +1,143 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Index</title>
+  
+</head>
+<body>
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Index")
+      @Html.ActionLink("Update", "Edit")
+        @Html.ActionLink("Delete", "GETTASK")
+</p>
+
+@*@{
+    Layout = null;
+}
+*@
+
+<script src="../../Scripts/jquery-1.5.1.js" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.7.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui.multiselect.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.tmpl.min.js")" type="text/javascript"></script>
+	<script src="@Url.Content("~/Scripts/jquery.jqGrid.locale-en-4.1.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.jqGrid-4.1.2.min.js")" type="text/javascript"></script>
+    <link href="../../Content/themes/jquery-ui-jqgrid.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/themes/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="../../Content/themes/jquery-ui-jqgrid.css" rel="stylesheet" type="text/css" />
+  @*  <link href="../../Content/themes/site.css" rel="stylesheet" type="text/css" />*@
+
+     
+
+ <table id="jqgProducts" cellpadding="0" cellspacing="0"></table>
+
+<div id="jqgpProducts" style="text-align:center;"></div>
+<div id="dlgSupplier"></div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $('#btn').click(function () {
+            window.location.href = '/../home/index'
+        });
+
+
+
+        $('#jqgProducts').jqGrid({
+
+            //url from wich data should be requested
+            url: '@Url.Action("Products")',
+            //type of data
+            datatype: 'json',
+            //url access method type
+            mtype: 'POST',
+            ondblClickRow: function (TaskId) {
+
+                var id = TaskId;
+                window.location.href = '/../task/Updateselect/?id=' + id;
+            },
+
+
+            onSelectRow: function (id) {
+
+                //trigger inline edit for row
+                $.post('@Url.Action("Updateselect")', { supplierId: id }, function () {
+
+                });
+
+            },
+
+            //columns names
+            colNames: ['TaskId', 'ProjectName', 'ModuleName', 'ScreenName', 'TaskName', 'EstimateHours', 'Priority', 'Creator', 'Reviewer', 'Assigned'],
+            //columns model
+            colModel: [
+                            { name: 'id', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editable: { required: true} },
+                           { name: 'ProjectName', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editable: { required: true} },
+                            { name: 'ModuleName', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} },
+                            { name: 'ScreenName', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} },
+                            { name: 'TaskName', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} },
+                             { name: 'EstimateHours', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} },
+
+                             { name: 'Priority', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} },
+                            { name: 'Creator', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} },
+                             { name: 'Reviewer', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} },
+                             { name: 'Assigned', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} }
+            //                           { name: 'StartDate', align: 'left', editable: true, edittype: 'date', editoptions: { maxlength: 40 }, editrules: { required: true} },
+            //                            { name: 'EndDate', align: 'left', editable: true, edittype: 'date', editoptions: { maxlength: 40 }, editrules: { required: true} },
+
+            //                            { name: 'StartTime', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} },
+            //                            { name: 'EndTime', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} },
+            //                            { name: 'Status', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} },
+            //                             { name: 'Comments', align: 'left', editable: true, edittype: 'text', editoptions: { maxlength: 40 }, editrules: { required: true} }
+
+
+                          ],
+            //pager for grid
+            pager: $('#jqgpProducts'),
+            //number of rows per page
+            rowNum: 10,
+            //initial sorting column
+            sortname: 'Id',
+            //initial sorting direction
+            sortorder: 'asc',
+            //we want to display total records count
+            viewrecords: true,
+            //grid height
+            height: '100%'
+        });
+
+
+        //        $('#jqgProducts').jqGrid('navGrid', '#jqgpProducts',
+        //           { edit: true, add: true, del: true, search: true }, { width: 'auto', url: '@Url.Action("DeleteProduct")' }).jqGrid('navButtonAdd', '#jqgpProducts',
+        //           {
+        //               caption: 'Search',
+        //               buttonicon: 'ui-icon-search',
+        //               onClickButton: function () {
+
+        //                   $('#jqgProducts').jqGrid('searchGrid', { multipleSearch: true });
+        //               },
+        //               position: 'last',
+        //               title: 'Search'
+        //           }
+
+        //          );
+
+
+
+    });
+
+        </script>
+
+     @*   <input type = "submit" id = "btn" value = "Addnew" />*@
+
+     </body>
+</html>
